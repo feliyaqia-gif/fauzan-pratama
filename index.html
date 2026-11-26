@@ -1,0 +1,490 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Absensi Siswa</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f3f6fc;
+    padding: 25px;
+    color: #24304a;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+header {
+    background: linear-gradient(135deg, #345cff, #6685ff);
+    color: white;
+    padding: 30px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+}
+
+header h1 {
+    margin-bottom: 10px;
+}
+
+header p {
+    opacity: 0.9;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px #00000008;
+}
+
+.card h3 {
+    font-size: 14px;
+    color: #71809e;
+}
+
+.card p {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.form-box, .table-box {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dce2ef;
+    border-radius: 9px;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: #345cff;
+}
+
+button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background: #345cff;
+    color: white;
+}
+
+.btn-delete {
+    background: #ffe8e8;
+    color: #d93636;
+    padding: 8px 12px;
+}
+
+.btn-edit {
+    background: #e9efff;
+    color: #345cff;
+    padding: 8px 12px;
+    margin-right: 5px;
+}
+
+.search {
+    max-width: 350px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #edf0f7;
+}
+
+th {
+    color: #71809e;
+    font-size: 13px;
+}
+
+.status {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.Hadir {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.Izin {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.Sakit {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.Alfa {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+@media (max-width: 800px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .table-box {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 700px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>📋 Absensi Siswa</h1>
+    <p>Sistem pencatatan dan rekap kehadiran siswa</p>
+</header>
+
+<div class="cards">
+    <div class="card">
+        <h3>Total Siswa</h3>
+        <p id="total">0</p>
+    </div>
+
+    <div class="card">
+        <h3>Hadir</h3>
+        <p id="hadir">0</p>
+    </div>
+
+    <div class="card">
+        <h3>Izin</h3>
+        <p id="izin">0</p>
+    </div>
+
+    <div class="card">
+        <h3>Sakit</h3>
+        <p id="sakit">0</p>
+    </div>
+
+    <div class="card">
+        <h3>Alfa</h3>
+        <p id="alfa">0</p>
+    </div>
+</div>
+
+<div class="form-box">
+    <h2>Tambah Absensi</h2>
+
+    <form id="formAbsensi">
+        <div class="form-grid">
+
+            <input type="text" id="nama"
+                   placeholder="Nama siswa" required>
+
+            <input type="text" id="nis"
+                   placeholder="NIS" required>
+
+            <select id="status">
+                <option value="Hadir">Hadir</option>
+                <option value="Izin">Izin</option>
+                <option value="Sakit">Sakit</option>
+                <option value="Alfa">Alfa</option>
+            </select>
+
+            <input type="date" id="tanggal" required>
+
+        </div>
+
+        <br>
+
+        <button class="btn-primary" type="submit">
+            Simpan Absensi
+        </button>
+    </form>
+</div>
+
+<div class="table-box">
+    <h2>Data Absensi</h2>
+
+    <input class="search" type="text" id="cari"
+           placeholder="Cari nama atau NIS siswa...">
+
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>NIS</th>
+                <th>Tanggal</th>
+                <th>Status</th>
+                <th>Kehadiran</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+
+        <tbody id="tabel"></tbody>
+    </table>
+</div>
+
+</div>
+
+<script>
+let dataAbsensi = JSON.parse(
+    localStorage.getItem("absensi")
+) || [];
+
+let editId = null;
+
+// Mengisi tanggal hari ini
+document.getElementById("tanggal").value =
+    new Date().toISOString().split("T")[0];
+
+// Menyimpan data
+document.getElementById("formAbsensi")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    let nama = document.getElementById("nama").value;
+    let nis = document.getElementById("nis").value;
+    let status = document.getElementById("status").value;
+    let tanggal = document.getElementById("tanggal").value;
+
+    // Cegah absensi ganda pada tanggal yang sama
+    let dataLama = dataAbsensi.find(item =>
+        item.nis === nis &&
+        item.tanggal === tanggal &&
+        item.id !== editId
+    );
+
+    if (dataLama) {
+        alert("Siswa sudah memiliki absensi pada tanggal tersebut!");
+        return;
+    }
+
+    if (editId !== null) {
+        let index = dataAbsensi.findIndex(
+            item => item.id === editId
+        );
+
+        dataAbsensi[index] = {
+            id: editId,
+            nama,
+            nis,
+            status,
+            tanggal
+        };
+
+        editId = null;
+    } else {
+        dataAbsensi.push({
+            id: Date.now(),
+            nama,
+            nis,
+            status,
+            tanggal
+        });
+    }
+
+    simpanData();
+    tampilkanData();
+
+    this.reset();
+
+    document.getElementById("tanggal").value =
+        new Date().toISOString().split("T")[0];
+});
+
+// Menyimpan ke LocalStorage
+function simpanData() {
+    localStorage.setItem(
+        "absensi",
+        JSON.stringify(dataAbsensi)
+    );
+}
+
+// Menghitung persentase kehadiran
+function hitungKehadiran(nis) {
+    let dataSiswa = dataAbsensi.filter(
+        item => item.nis === nis
+    );
+
+    let jumlahHadir = dataSiswa.filter(
+        item => item.status === "Hadir"
+    ).length;
+
+    if (dataSiswa.length === 0) {
+        return 0;
+    }
+
+    return Math.round(
+        (jumlahHadir / dataSiswa.length) * 100
+    );
+}
+
+// Menampilkan data dan rekap
+function tampilkanData() {
+
+    let tabel = document.getElementById("tabel");
+    let cari = document.getElementById("cari")
+        .value.toLowerCase();
+
+    tabel.innerHTML = "";
+
+    let hasil = dataAbsensi.filter(item =>
+        item.nama.toLowerCase().includes(cari) ||
+        item.nis.toLowerCase().includes(cari)
+    );
+
+    hasil.forEach((item, index) => {
+
+        let persen = hitungKehadiran(item.nis);
+
+        tabel.innerHTML += `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${item.nama}</td>
+            <td>${item.nis}</td>
+            <td>${item.tanggal}</td>
+            <td>
+                <span class="status ${item.status}">
+                    ${item.status}
+                </span>
+            </td>
+            <td>${persen}%</td>
+            <td>
+                <button class="btn-edit"
+                    onclick="editData(${item.id})">
+                    Edit
+                </button>
+
+                <button class="btn-delete"
+                    onclick="hapusData(${item.id})">
+                    Hapus
+                </button>
+            </td>
+        </tr>
+        `;
+    });
+
+    // Rekap status
+    document.getElementById("total").innerText =
+        new Set(dataAbsensi.map(item => item.nis)).size;
+
+    document.getElementById("hadir").innerText =
+        dataAbsensi.filter(item =>
+            item.status === "Hadir"
+        ).length;
+
+    document.getElementById("izin").innerText =
+        dataAbsensi.filter(item =>
+            item.status === "Izin"
+        ).length;
+
+    document.getElementById("sakit").innerText =
+        dataAbsensi.filter(item =>
+            item.status === "Sakit"
+        ).length;
+
+    document.getElementById("alfa").innerText =
+        dataAbsensi.filter(item =>
+            item.status === "Alfa"
+        ).length;
+}
+
+// Mencari siswa
+document.getElementById("cari")
+.addEventListener("input", tampilkanData);
+
+// Menghapus data
+function hapusData(id) {
+
+    if (confirm("Yakin ingin menghapus data ini?")) {
+        dataAbsensi = dataAbsensi.filter(
+            item => item.id !== id
+        );
+
+        simpanData();
+        tampilkanData();
+    }
+}
+
+// Mengedit data
+function editData(id) {
+
+    let item = dataAbsensi.find(
+        data => data.id === id
+    );
+
+    document.getElementById("nama").value = item.nama;
+    document.getElementById("nis").value = item.nis;
+    document.getElementById("status").value = item.status;
+    document.getElementById("tanggal").value = item.tanggal;
+
+    editId = id;
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+// Menampilkan data saat aplikasi dibuka
+tampilkanData();
+</script>
+
+</body>
+</html>
